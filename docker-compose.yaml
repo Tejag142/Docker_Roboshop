@@ -1,0 +1,85 @@
+networks:
+  default:
+    driver: bridge
+    name: roboshop
+    external: true
+    #external: true #I created network already using docker network create roboshop
+#volumes
+  mongodb:
+  redis:
+  mysql:
+  rabbitmq: # docker volume create rabbitmq
+services:
+  mongodb:
+    image: teja142/mongodb:roboshop
+    container_name: mongodb
+    #volumes
+    #- mongodb:/data/db
+  catalogue:
+    image: teja142/catalogue:roboshop
+    container_name: catalogue
+    depends_on:
+    - mongodb
+  redis:
+    image: teja142/redis:roboshop
+    container_name: redis
+    #volumes
+    #- redis:/data
+  user:
+    image: teja142/user:roboshop
+    container_name: user
+    depends_on:
+    - redis
+    - mongodb
+  cart:
+    image: teja142/cart:roboshop
+    container_name: cart
+    depends_on:
+    - catalogue
+    - redis
+  mysql:
+    image: teja142/mysql:roboshop
+    container_name: mysql
+    #volumes
+    #- mysql:/var/lib/mysql
+  shipping:
+    image: teja142/shipping:roboshop
+    container_name: shipping
+    depends_on:
+    - mysql
+    - cart
+  rabbitmq:
+    image: teja142/rabbitmq:roboshop
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: roboshop
+      RABBITMQ_DEFAULT_PASS: roboshop123
+    #volumes
+    #- rabbitmq:/var/lib/rabbitmq
+  payment:
+    image: teja142/payment:roboshop
+    container_name: payment
+    environment:
+      CART_HOST: cart
+      CART_PORT: 8080
+      USER_HOST: user
+      USER_PORT: 8080
+      AMQP_HOST: rabbitmq
+      AMQP_USER: roboshop
+      AMQP_PASS: roboshop123
+    depends_on:
+    - rabbitmq
+    - cart
+    - user
+  frontend:
+    image: teja142/frontend:roboshop
+    container_name: frontend
+    ports:
+    - "80:80"
+    depends_on:
+    - catalogue
+    - user
+    - cart
+    - shipping
+    - payment
+      
