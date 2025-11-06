@@ -4,60 +4,60 @@ networks:
     name: roboshop
     external: true
     #external: true #I created network already using docker network create roboshop
-#volumes
+volumes:
   mongodb:
   redis:
   mysql:
   rabbitmq: # docker volume create rabbitmq
 services:
   mongodb:
-    image: teja142/mongodb:roboshop
+    image: teja142/mongodb:optv1
     container_name: mongodb
-    #volumes
-    #- mongodb:/data/db
+    volumes:
+    - mongodb:/data/db
   catalogue:
-    image: teja142/catalogue:roboshop
+    image: teja142/catalogue:optv1
     container_name: catalogue
     depends_on:
     - mongodb
   redis:
-    image: teja142/redis:roboshop
+    image: teja142/redis:optv1
     container_name: redis
-    #volumes
-    #- redis:/data
+    volumes:
+    - redis:/data
   user:
-    image: teja142/user:roboshop
+    image: teja142/user:optv1
     container_name: user
     depends_on:
     - redis
     - mongodb
   cart:
-    image: teja142/cart:roboshop
+    image: teja142/cart:optv1
     container_name: cart
     depends_on:
     - catalogue
     - redis
   mysql:
-    image: teja142/mysql:roboshop
+    image: teja142/mysql:optv1
     container_name: mysql
-    #volumes
-    #- mysql:/var/lib/mysql
+    volumes:
+    - mysql:/var/lib/mysql
   shipping:
-    image: teja142/shipping:roboshop
+    image: teja142/shipping:optv1
     container_name: shipping
     depends_on:
     - mysql
     - cart
   rabbitmq:
-    image: teja142/rabbitmq:roboshop
+    image: teja142/rabbitmq:optv1
     container_name: rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: roboshop
       RABBITMQ_DEFAULT_PASS: roboshop123
-    #volumes
-    #- rabbitmq:/var/lib/rabbitmq
+    volumes:
+    - rabbitmq:/var/lib/rabbitmq
   payment:
-    image: teja142/payment:roboshop
+    image: teja142/payment:optv1
     container_name: payment
     environment:
       CART_HOST: cart
@@ -72,7 +72,7 @@ services:
     - cart
     - user
   frontend:
-    image: teja142/frontend:roboshop
+    image: teja142/frontend:optv1
     container_name: frontend
     ports:
     - "80:80"
