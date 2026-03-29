@@ -16,7 +16,7 @@ pipeline {
         booleanParam(name: 'TOGGLE', defaultValue: true, description: 'toggle this value')
         choice(name: 'CHOICE', choices: ['one', 'two', 'three'], description: 'pick one')
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter the Passsword')
-        string(name: 'VERSION', defaultValue: '1.0.0' description: 'Enter version')
+        string(name: 'VERSION', defaultValue: '1.0.0', description: 'Enter version')
     }
 
     stages {
