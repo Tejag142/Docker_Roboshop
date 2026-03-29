@@ -22,8 +22,10 @@ pipeline {
     stages {
         stage ( 'Build' ) {
             steps {
-                script {
+                dir ('catalogue') {
+ 
                     sh """
+
                     docker build -t catalogue:${params.VERSION} .
 
                     echo 'Hello ${params.PERSON} Image is building'
