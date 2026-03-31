@@ -1,7 +1,6 @@
 pipeline {
-    agent {
-        label 'JAVA-AGENT-1'
-    }
+    agent any
+    
     environment{
         ksdjfn="kjshdhfi"
 
