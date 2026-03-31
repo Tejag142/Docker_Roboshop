@@ -21,11 +21,11 @@ pipeline {
     stages {
         stage ( 'Build' ) {
             steps {
-                dir ('catalogue') {
+                dir ('cart') {
  
                     sh """
 
-                    docker build -t catalogue:${params.VERSION} .
+                    docker build -t cart:${params.VERSION} .
 
                     echo 'Hello ${params.PERSON} Image is building'
 
