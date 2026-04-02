@@ -21,13 +21,13 @@ pipeline {
     stages {
         stage ( 'Build' ) {
             steps {
-                dir ('cart') {
+                dir ('payment') {
  
                     sh """
 
-                    docker build -t cart:${params.VERSION} .
+                    docker build -t payment:${params.VERSION} .
 
-                    echo 'Hello ${params.PERSON} Image is building'
+                    echo 'Hello ${params.PERSON} Image is building '
 
                     """
                 }
