@@ -27,7 +27,7 @@ pipeline {
 
                     docker build -t payment:${params.VERSION} .
 
-                    echo 'Hello ${params.PERSON} Image is building'
+                    echo 'Hello ${params.PERSON} Image is building '
 
                     """
                 }
