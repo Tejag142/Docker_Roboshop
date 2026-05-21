@@ -14,17 +14,19 @@ pipeline {
     stages {
         stage ('Git code check out') {
             steps {
-                git url: '', branch: 'master'
+                git url: 'https://github.com/Tejag142/Docker_Roboshop', branch: 'master'
                 echo "Hello ${params.Name} Code was copied"
             }
 
         }
         stage ('Build') {
             steps {
-                sh """
-                docker build -t roboshop_frontend:${params.Version}
-                echo "Hello ${params.Jenkins} Image is building"
-                """
+                dir('frontend') {
+                    sh """
+                    docker build -t roboshop_frontend:${params.Version}
+                    echo "Hello ${params.Jenkins} Image is building"
+                    """
+                }
             }
         }
         stage ('Test') {
