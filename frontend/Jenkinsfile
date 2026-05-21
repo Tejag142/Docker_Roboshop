@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh """
-                    docker build -t roboshop_frontend:${params.Version}
+                    docker build -t roboshop_frontend:${params.Version} .
                     echo "Hello ${params.Jenkins} Image is building"
                     """
                 }
