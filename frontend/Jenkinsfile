@@ -52,7 +52,7 @@ pipeline {
             steps {
                 input message: "Do you want to deploy to ${params.Env}?", submitter: 'admin'
                 sh """
-                docker run -d --name roboshop_frontend -p ${params.port}:80 roboshop_frontend:${params.Version}
+                docker run -d --name roboshop_frontend -p ${params.Port}:80 roboshop_frontend:${params.Version}
                 """
             }
             
