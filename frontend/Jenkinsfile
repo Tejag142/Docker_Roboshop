@@ -43,7 +43,7 @@ pipeline {
                 }
                 sh """
                 docker tag roboshop_frontend:${params.Version} teja142/roboshop_frontend:${params.Version}
-                docker push teja142/pop-balloon:${params.Version}
+                docker push teja142/roboshop_frontend:${params.Version}
                 docker logout
                 """
             }
