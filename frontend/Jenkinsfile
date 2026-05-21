@@ -1,0 +1,62 @@
+pipeline {
+
+    agent any
+    options {
+        timeout(time: 10, unit: 'MINUTES')
+        disableConcurrentBuilds()
+    }
+    parameters {
+         string(name: 'Name', defaultValue: 'Jenkins', description: 'Please provide the name')
+         choice(name: 'ENV', choices: ['dev', 'QA', 'PROD'], description: 'Please provide the Environment')
+         text(name: 'Version', defaultValue: '1.0.0', description: 'Please provide the version Image')
+         string(name: 'Port', defaultValue: '7000', description: 'Please provide the port')
+    }
+    stages {
+        stage ('Git code check out') {
+            steps {
+                git url: '', branch: 'master'
+                echo "Hello ${params.Name} Code was copied"
+            }
+
+        }
+        stage ('Build') {
+            steps {
+                sh """
+                docker build -t roboshop_frontend:${params.Version}
+                echo "Hello ${params.Jenkins} Image is building"
+                """
+            }
+        }
+        stage ('Test') {
+            steps {
+                echo "Hello ${params.Jenkins} Testing is done"
+            }
+        }
+        stage ('Push Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'Docker-creds', usernameVariable: 'DOCKER-USER', password_Variable: 'DOCKER-PASS')]) {
+                    sh """
+                    echo $DOCKER-PASS | docker login -u $DOCKER-USER --password-stdin
+                    """
+                }
+                sh """
+                docker tag roboshop_frontend:${params.Version} teja142/roboshop_frontend:${params.Version}
+                docker push teja142/pop-balloon:${params.Version}
+                docker logout
+                """
+            }
+        }
+        stage ('deploy or run the container') {
+            steps {
+                input message: "Do you want to deploy to ${params.Env}?", submitter: 'admin'
+                sh """
+                docker run -d --name roboshop_frontend -p ${params.port}:80 roboshop_frontend:${params.Version}
+                """
+            }
+            
+        }
+
+        
+        
+    }
+}
