@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage ('Git code check out') {
             steps {
-                git url: 'https://github.com/Tejag142/Docker_Roboshop', branch: 'master'
+                git url: 'https://github.com/Tejag142/Docker_Roboshop.git', branch: 'master'
                 echo "Hello ${params.Name} Code was copied"
             }
 
